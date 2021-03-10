@@ -61,7 +61,7 @@ For pose, the data order is
 - quaternion_6X[2] - z
 - quaternion_6X[3] - w
 
-And the quaternion has a 90-degree rotation about X-axis when HY-PCBA-02 is placed horizontally.
+And the quaternion has a 90-degree rotation about X-axis when GP01 is placed horizontally.
 ```
                                     Z     
                                     ^  ^ Y
@@ -73,7 +73,7 @@ And the quaternion has a 90-degree rotation about X-axis when HY-PCBA-02 is plac
 ```
 
 
-# **How to get data frame from HY-PCBA-02 on Windows PC**
+# **How to get data frame from GP01 on Windows PC**
 Here we use a demo project "IMU_Win_Demo" to show how to get the sensor data.
 The project is tested on Visual Studio 15 2017.
 ## Build
@@ -87,7 +87,7 @@ And then open VS to build and run the demo. The demo is to show how to use IMU d
 
 ## Code Structure
 - **/src**       main source code of the demo
-- **/libs**      hid lib, which is used to communicate with HY-PCBA-02 via USB
+- **/libs**      hid lib, which is used to communicate with GP01 via USB
 - **/3rdparty**  3rd party libs, including graphic tools to render in OpenGL and Eigen to dispose the rotation.
 
 ## Implementation
@@ -131,10 +131,10 @@ DWORD WINAPI CUsbHidDevice::HidRespThreadFunc(LPVOID lpParamter)
     return 0;
 }
 ```
-Here "buf" is the memory to fetch sensor data frame from HY-PCBA-02. Normally it only use 64 bytes for each frame.
+Here "buf" is the memory to fetch sensor data frame from GP01. Normally it only use 64 bytes for each frame.
 The second byte is to tell if it's a sensor data frame or command responses.
 
-Commands are sent to HY-PCBA-02 by function "hid_write".
+Commands are sent to GP01 by function "hid_write".
 ```
 int CUsbHidDevice::CommunicateHid(unsigned char* buf)
 {
