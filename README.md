@@ -1,5 +1,5 @@
-# **HY-PCBA-02(GP01) HID device sensor data frame**
-HY-PCBA-02 can communicate with windows PC as a standard USB HID device. And IMU data are packaged in a 64 bytes frame.
+# **GP01 HID device sensor data frame**
+GP01 can communicate with windows PC as a standard USB HID device. And IMU data are packaged in a 64 bytes frame.
 ```
 typedef struct  
 {
