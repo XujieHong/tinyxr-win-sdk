@@ -57,34 +57,34 @@ void CCube::init_shader()
 
 void CCube::init_data()
 {
+	glUseProgram(program);
+	glGenVertexArrays(1, VAOs);
+	glBindVertexArray(VAOs[0]);
+
     glGenBuffers(NumBuffers, Buffers);
     glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
     GLuint colorbuffer;
     glGenBuffers(1, &colorbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(color_buffer), color_buffer, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    glUseProgram(program);
 
-    GLuint u_mvp = glGetUniformLocation(program, "u_mvp");
-	GLfloat mvp[4][4] = {0.5, 0, 0, 0, 
+	GLuint u_mvp = glGetUniformLocation(program, "u_mvp");
+	GLfloat mvp[4][4] = { 0.5, 0, 0, 0,
 						 0, 1, 0, 0,
 						 0, 0, 1, 0,
-						 0, 0, 0, 1};
+						 0, 0, 0, 1 };
 
-    glUniformMatrix4fv(u_mvp, 1, GL_FALSE, &mvp[0][0]);
+	glUniformMatrix4fv(u_mvp, 1, GL_FALSE, &mvp[0][0]);
 
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-    //GLuint col = glGetAttribLocation(program, "color");
-
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void CCube::OnSensorEvent(unsigned char * buf)
@@ -112,7 +112,7 @@ void CCube::OnSensorEvent(unsigned char * buf)
 
 //	cout << "acc = " << accSensorData[0] << ", " << accSensorData[1] << ", " << accSensorData[2] << endl;
 //	cout << "gyro = " << gyroSensorData[0] << ", " << gyroSensorData[1] << ", " << gyroSensorData[2] << endl;
-	cout << "mag = " << magSensorData[0] << ", " << magSensorData[1] << ", " << magSensorData[2] << endl;
+//	cout << "mag = " << magSensorData[0] << ", " << magSensorData[1] << ", " << magSensorData[2] << endl;
 //	cout << "quaternion: w = " << mQuaternion[3] << ",     x = " << mQuaternion[0] << ",     y = " << mQuaternion[1] << ",     z = " << mQuaternion[2] << endl;
 }
 
@@ -135,6 +135,10 @@ Eigen::Matrix3d CCube::euler2RotationMatrix(const double roll, const double pitc
 
 void CCube::display()
 {
+	glUseProgram(program);
+
+	glBindVertexArray(VAOs[0]);
+
 	GLuint u_mvp = glGetUniformLocation(program, "u_mvp");
 	GLfloat mvp[16] = { 1, 0, 0, 0,
 						  0, 1, 0, 0,
@@ -162,6 +166,9 @@ void CCube::display()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glBindVertexArray(0);
+
 	glutSwapBuffers();
 }
 
@@ -217,3 +224,4 @@ void CCube::main(int argc, char* argv[])
 
 GLuint CCube::program;
 float CCube::mQuaternion[4];
+GLuint CCube::VAOs[1];

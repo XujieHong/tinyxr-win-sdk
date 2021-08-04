@@ -110,11 +110,9 @@ public:
 	virtual ~CCube();
 
 private:
-	enum VAO_IDs { Triangles, NumVAOs };
 	enum Buffer_IDs { ArrayBuffer, NumBuffers };
 	enum Attrib_IDs { vPosition = 0 };
 
-	GLuint VAOs[NumVAOs];
 	GLuint Buffers[NumBuffers];
 
 	const GLchar* vertex_shader = "#version 430 core \n"
@@ -138,6 +136,7 @@ private:
 	static GLuint program;
 	//static double mYaw, mPitch, mRoll;
 	static float mQuaternion[4];
+	static GLuint VAOs[1];
 
 private:
 	void init_shader();
